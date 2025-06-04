@@ -285,6 +285,7 @@ class PveClientBase {
       path: url,
       method: method,
       headers: headers,
+      timeout: 30000,
     };
 
     //debug
@@ -333,7 +334,10 @@ class PveClientBase {
           reject(error);
         });
       });
-
+      req.on("error", (error) => {
+        this.#error(error);
+        reject(error);
+      });
       if (body != "") {
         req.write(body);
       }
